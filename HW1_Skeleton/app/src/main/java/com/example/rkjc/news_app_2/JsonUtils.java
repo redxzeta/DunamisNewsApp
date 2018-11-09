@@ -12,19 +12,18 @@ public class JsonUtils {
         ArrayList<NewsItem> newsList = new ArrayList<>();
         try {
             JSONObject mainJSONObject = new JSONObject(jsonResult);
-            JSONArray items = mainJSONObject.getJSONArray("article");
+            JSONArray items = mainJSONObject.getJSONArray("articles");
 
             for(int i = 0; i < items.length(); i++){
                 JSONObject item = items.getJSONObject(i);
-                newsList.add(new NewsItem(item.getString("id"),
-                            item.getString("name"),
-                            item.getString("author"),
+                newsList.add(new NewsItem(
+
                             item.getString("title"),
                             item.getString("description"),
                             item.getString("url"),
-                            item.getString("urlToImage"),
-                            item.getString("publishedAt"),
-                            item.getString("content")
+
+                            item.getString("publishedAt")
+
 
                         ));
             }
