@@ -12,7 +12,7 @@ public class JsonUtils {
         ArrayList<NewsItem> newsList = new ArrayList<>();
         try {
             JSONObject mainJSONObject = new JSONObject(jsonResult);
-            JSONArray items = mainJSONObject.getJSONArray("items");
+            JSONArray items = mainJSONObject.getJSONArray("article");
 
             for(int i = 0; i < items.length(); i++){
                 JSONObject item = items.getJSONObject(i);

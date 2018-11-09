@@ -36,14 +36,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //mSearchResultsTextView = (TextView) findViewById(R.id.tv_news_search_results_json);
         mRecyclerView = (RecyclerView)findViewById(R.id.news_recyclerview);
         mNewsRecyclerViewAdapter = new NewsRecyclerViewAdapter(this, news);
         mRecyclerView.setAdapter(mNewsRecyclerViewAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
     }
 
     public class NewsQueryTask extends AsyncTask<URL, Void, String> {
@@ -66,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String newsSearchResults) {
 
 
-            news.clear();
+          //  news.clear();
             news = JsonUtils.parseNews(newsSearchResults);
             mNewsRecyclerViewAdapter.mNews.addAll(news);
             mNewsRecyclerViewAdapter.notifyDataSetChanged();
