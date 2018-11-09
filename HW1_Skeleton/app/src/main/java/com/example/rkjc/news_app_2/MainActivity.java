@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.rkjc.news_app_2.JsonUtils;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -23,12 +24,12 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<NewsItem> news = new ArrayList<>();
-    private TextView mSearchResultsTextView;
-    private static final String SEARCH_QUERY_RESULTS = "searchResults";
-    private RecyclerView mRecyclerView;
-    private String gitHubSearchResults;
-    private NewsRecyclerViewAdapter mNewsRecyclerViewAdapter;
 
+
+    private RecyclerView mRecyclerView;
+
+    private NewsRecyclerViewAdapter mNewsRecyclerViewAdapter;
+    private URL newsUrl =NetworkUtils.buildUrl();
 
 
     @Override
@@ -41,44 +42,34 @@ public class MainActivity extends AppCompatActivity {
         mNewsRecyclerViewAdapter = new NewsRecyclerViewAdapter(this, news);
         mRecyclerView.setAdapter(mNewsRecyclerViewAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        String searchResults = savedInstanceState.getString(SEARCH_QUERY_RESULTS);
-        populateRecyclerView(searchResults);
+
+
     }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(SEARCH_QUERY_RESULTS, gitHubSearchResults);
-    }
-
-        private void makeNewsSearchQuery(){
-        String yay= "A";
-        URL SearchUrl = NetworkUtils.buildUrl();
-        new NewsQueryTask().execute(SearchUrl);
-    }
-
-
 
     public class NewsQueryTask extends AsyncTask<URL, Void, String> {
 
-
         @Override
-        protected String doInBackground(URL... params) {
-            URL searchUrl = params[0];
-            String newsSearchResults = null;
+        protected void onPreExecute(){
+            super.onPreExecute();
+        }
+        @Override
+        protected String doInBackground(URL... urls) {
+            String r= "";
             try {
-                newsSearchResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+                r=NetworkUtils.getResponseFromHttpUrl(newsUrl);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return newsSearchResults;
+            return r;
         }
-
         @Override
         protected void onPostExecute(String newsSearchResults) {
-            if (newsSearchResults != null && !newsSearchResults.equals("")) {
 
-            }
+
+            news.clear();
+            news = JsonUtils.parseNews(newsSearchResults);
+            mNewsRecyclerViewAdapter.mNews.addAll(news);
+            mNewsRecyclerViewAdapter.notifyDataSetChanged();
         }
 
     }
@@ -92,16 +83,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClickedId = item.getItemId();
         if (itemThatWasClickedId == R.id.action_search) {
-            makeNewsSearchQuery();
+            //makeNewsSearchQuery();
+            new NewsQueryTask().execute();
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-    public void populateRecyclerView(String searchResults){
-        Log.d("mycode", searchResults);
-        news = JsonUtils.parseNews(searchResults);
-        mNewsRecyclerViewAdapter.mNews.addAll(news);
-        mNewsRecyclerViewAdapter.notifyDataSetChanged();
     }
 
 
