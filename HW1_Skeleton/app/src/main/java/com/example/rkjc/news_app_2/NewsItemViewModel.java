@@ -21,4 +21,11 @@ public class NewsItemViewModel extends AndroidViewModel {
 
     public LiveData<List<NewsItem>> getAllNews () {return mAllNews;}
 
+    public void update() {
+        mNewsRepository.getAllNews();
+    }
+    public void delete() {
+        mNewsRepository.deleteAll();
+    }
+
 }

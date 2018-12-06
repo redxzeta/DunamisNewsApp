@@ -45,8 +45,7 @@ public class MainActivity extends AppCompatActivity {
         mNewsRecyclerViewAdapter = new NewsRecyclerViewAdapter(this, news);
        //final NewsRecyclerViewAdapter mNewsRecyclerViewAdapter = new NewsRecyclerViewAdapter(this, newsItemViewModel);
 
-        mRecyclerView.setAdapter(mNewsRecyclerViewAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
       //  newsItemViewModel.getAllNews().observe(this,mNewsRecyclerViewAdapter);
 
         NewsItemViewModel viewModel = ViewModelProviders.of(this).get(NewsItemViewModel.class);
@@ -58,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
       // viewModel.getAllNews().observe(this,
-
+        mRecyclerView.setAdapter(mNewsRecyclerViewAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
 
@@ -100,10 +100,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClickedId = item.getItemId();
         if (itemThatWasClickedId == R.id.action_search) {
+            newsItemViewModel.update();
+           mNewsRecyclerViewAdapter.mNews.addAll
+                   ((ArrayList)newsItemViewModel.getAllNews().getValue());
+           mNewsRecyclerViewAdapter.notifyDataSetChanged();
 
-            newsItemViewModel.getAllNews();
-            //makeNewsSearchQuery();
-          //  new NewsQueryTask().execute();
             return true;
         }
         return super.onOptionsItemSelected(item);

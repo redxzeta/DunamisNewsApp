@@ -24,4 +24,6 @@ public interface NewsItemDao {
     @Query("Select * from news_item")
     LiveData<List<NewsItem>> loadAllNewsItems();
 
+
+   // void delete(NewsItem param);
 }

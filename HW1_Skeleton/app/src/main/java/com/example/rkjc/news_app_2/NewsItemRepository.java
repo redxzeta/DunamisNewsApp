@@ -26,26 +26,36 @@ public class NewsItemRepository {
         new deleteAsyncTask(mNewsItemDao).execute(newsitem);
     }
 
-    public void pop(NewsItem newsitem) {
-        new popAsyncTask(mNewsItemDao).execute(newsitem);
-    }
 
     public LiveData<List<NewsItem>> getAllNews(){
         return mNewsItems;
     }
-    public void getAll (NewsItem newsitem) {
-        new getAllAsyncTask(mNewsItemDao).execute(newsitem);
+    public void insert(NewsItem newsitem) {
+        new insertAsyncTask(mNewsItemDao).execute(newsitem);
     }
-    private static class getAllAsyncTask extends AsyncTask<NewsItem, Void, Void> {
-        private NewsItemDao m;
+
+    public LiveData<List<NewsItem>> deleteAll() {
+        return mNewsItems;
+    }
+
+    private static class insertAsyncTask extends AsyncTask<NewsItem, Void, Void> {
+        private NewsItemDao  mAsyncNewsDao;
         private LiveData<List<NewsItem>> mNewsItems;
-        private getAllAsyncTask(NewsItemDao dao) {
-            m=dao;
+        private insertAsyncTask(NewsItemDao dao) {
+            mAsyncNewsDao=dao;
         }
 
         @Override
         protected Void doInBackground(final NewsItem... params) {
-            m.loadAllNewsItems();
+            mAsyncNewsDao.deleteAll();
+
+            try {
+                String dataString = NetworkUtils.getResponseFromHttpUrl(NetworkUtils.buildUrl());
+                mAsyncNewsDao.insert(JsonUtils.parseNews(dataString));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             return null;
         }
     }
@@ -59,8 +69,8 @@ public class NewsItemRepository {
         @Override
         protected Void doInBackground(final NewsItem... params) {
              //URL newsUrl =NetworkUtils.buildUrl();
-            //Log.d("mycode", "deleteding word: " + params[0].getWord());
-            mAsyncNewsDao.deleteAll();
+            Log.d("mycode", "deleteding word: " + params[0].getId());
+            mAsyncNewsDao.delete(params[0]);
 
 
 
@@ -68,31 +78,5 @@ public class NewsItemRepository {
         }
     }
 
-    private static class popAsyncTask extends AsyncTask<NewsItem, Void, Void> {
-        ArrayList<NewsItem> xNewsItems = new ArrayList<>();
-        String x ="";
-        private URL newsUrl =NetworkUtils.buildUrl();
-        private NewsItemDao  mAsyncNewsDao;
-        popAsyncTask(NewsItemDao dao) {
-            mAsyncNewsDao = dao;
-        }
 
-        @Override
-        protected Void doInBackground(final NewsItem... params) {
-            String r= "";
-            try {
-                r=NetworkUtils.getResponseFromHttpUrl(newsUrl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-            xNewsItems =JsonUtils.parseNews(x);
-            mAsyncNewsDao.insert(xNewsItems);
-
-
-
-            return null;
-        }
-    }
 }
