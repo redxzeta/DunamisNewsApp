@@ -20,12 +20,22 @@ public class NewsItem {
     private String title;
     private String description;
     private String url;
-
+   // private String urlToImage;
     private String publishedAt;
+/*
+    public String getUrlToImage() {
+        return urlToImage;
+    }
+
+    public void setUrlToImage(String urlToImage) {
+        this.urlToImage = urlToImage;
+    }
+*/
+
 
     @Ignore
     public NewsItem( String title, String description, String url, String publishedAt) {
-
+      //  this.urlToImage=urlToImage;
         this.title=title;
         this.description=description;
         this.url=url;
@@ -41,7 +51,7 @@ public class NewsItem {
         this.url=url;
 
         this.publishedAt=publishedAt;
-
+        //this.urlToImage=urlToImage;
     }
 
     public String getTitle() {

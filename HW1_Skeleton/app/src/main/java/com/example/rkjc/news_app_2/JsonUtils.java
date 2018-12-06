@@ -22,7 +22,8 @@ public class JsonUtils {
                             item.getString("description"),
                             item.getString("url"),
 
-                            item.getString("publishedAt")
+                            item.getString("publishedAt")//,
+                           // item.getString("urlToImage")
 
 
                         ));

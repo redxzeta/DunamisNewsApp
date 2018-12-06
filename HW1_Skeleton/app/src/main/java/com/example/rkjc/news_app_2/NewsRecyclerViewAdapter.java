@@ -38,6 +38,8 @@ public class NewsRecyclerViewAdapter  extends RecyclerView.Adapter<NewsRecyclerV
         holder.bind(position);
     }
 
+
+
     public void setNews(List<NewsItem> xnewsitems) {
         mNews =xnewsitems;
         notifyDataSetChanged();

@@ -18,7 +18,7 @@ public interface NewsItemDao {
     void deleteAll();
 
     @Delete
-    void delete(List<NewsItem> items);
+    void delete(NewsItem newsItem);
 
 
     @Query("Select * from news_item")

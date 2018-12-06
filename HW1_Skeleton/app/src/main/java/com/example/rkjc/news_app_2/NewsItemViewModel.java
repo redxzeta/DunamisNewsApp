@@ -15,14 +15,14 @@ public class NewsItemViewModel extends AndroidViewModel {
     public NewsItemViewModel(Application application) {
         super(application);
         mNewsRepository= new NewsItemRepository(application);
-        mAllNews = mNewsRepository.getAllNews();
+        mAllNews = mNewsRepository.loadAllNewsItems();
     }
 
 
     public LiveData<List<NewsItem>> getAllNews () {return mAllNews;}
 
     public void update() {
-        mNewsRepository.getAllNews();
+        mNewsRepository.insert();
     }
     public void delete() {
         mNewsRepository.deleteAll();

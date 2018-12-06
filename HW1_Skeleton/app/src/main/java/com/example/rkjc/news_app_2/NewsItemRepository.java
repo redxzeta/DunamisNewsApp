@@ -22,21 +22,16 @@ public class NewsItemRepository {
 
     LiveData<List<NewsItem>>  loadAllNewsItems() {return mNewsItems;}
 
-    public void delete(NewsItem newsitem){
-        new deleteAsyncTask(mNewsItemDao).execute(newsitem);
+    public void deleteAll(){
+        new deleteAsyncTask(mNewsItemDao).execute();
     }
 
 
-    public LiveData<List<NewsItem>> getAllNews(){
-        return mNewsItems;
-    }
-    public void insert(NewsItem newsitem) {
-        new insertAsyncTask(mNewsItemDao).execute(newsitem);
+
+    public void insert() {
+        new insertAsyncTask(mNewsItemDao).execute();
     }
 
-    public LiveData<List<NewsItem>> deleteAll() {
-        return mNewsItems;
-    }
 
     private static class insertAsyncTask extends AsyncTask<NewsItem, Void, Void> {
         private NewsItemDao  mAsyncNewsDao;
@@ -70,7 +65,8 @@ public class NewsItemRepository {
         protected Void doInBackground(final NewsItem... params) {
              //URL newsUrl =NetworkUtils.buildUrl();
             Log.d("mycode", "deleteding word: " + params[0].getId());
-            mAsyncNewsDao.delete(params[0]);
+
+            mAsyncNewsDao.deleteAll();
 
 
 
